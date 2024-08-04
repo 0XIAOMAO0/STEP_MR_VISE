@@ -103,8 +103,8 @@ void TimerCallBack_Controler(void)
         if(closedloop_mode == ENABLE)
         {
             encoder_cnt = *(volatile uint16_t *)(ReadAngle() * 2 + FLASH_BASS_ADDRESS); //读出编码器的角度位置值
-            step_input = LL_TIM_GetCounter(TIM1); //读出计数器计数的外部step控制脉冲数
-            step_input = 0;
+            // step_input = LL_TIM_GetCounter(TIM1); //读出计数器计数的外部step控制脉冲数
+            // step_input = 0;
             if(step_input - step_input_last < -(STEP_INPUT_COUNTER_RELOAD_VAL / 2))
             {
                 step_input_sum += stepangle * (STEP_INPUT_COUNTER_RELOAD_VAL + 1);

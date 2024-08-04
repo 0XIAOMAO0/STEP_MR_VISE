@@ -332,7 +332,7 @@ uint8_t en_mode = 1; //使能标志位
 
 int main(void)
 {
-		uint16_t angle;
+//		uint16_t angle;
     LL_Init();
     SystemClock_Config();
     MX_GPIO_Init();
@@ -340,14 +340,15 @@ int main(void)
     MX_TIM3_Init();
     MX_USART1_UART_Init();
     MX_TIM1_Init();
-		TLE5012_Init();	
+	TLE5012_Init();	
     LL_mDelay(100);
     SetModeCheck();
     MX_TIM6_Init();
     MX_IWDG_Init();
     while(1)
     {
-        SerialCheck();
+        // SerialCheck();
+        KEY_Process();
 //			angle=ReadAngle();
 //			printf("angle:%d\n",angle);
     }
@@ -667,6 +668,15 @@ static void MX_GPIO_Init(void)
     GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
     GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
     LL_GPIO_Init(NSS_GPIO_Port, &GPIO_InitStruct);
+	GPIO_InitStruct.Pin = KEY2_Pin;
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+	LL_GPIO_Init(KEY2_GPIO_Port, &GPIO_InitStruct);
+	GPIO_InitStruct.Pin = KEY1_Pin;
+	GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
+	LL_GPIO_Init(KEY1_GPIO_Port, &GPIO_InitStruct);
+    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE0);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE1);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE2);
     LL_GPIO_SetPinPull(DIRIN_GPIO_Port, DIRIN_Pin, LL_GPIO_PULL_NO);//方向控制信号外部管脚中断
@@ -1009,24 +1019,21 @@ void SerialCheck(void)
     int temp1;
     int temp2;
     int temp3;
-    printf("----- HyperStepper 20190829 -----\r\n");
     printf("PID gains: kp =%d, ki =%d, kd =%d\r\n", kp, ki, kd);
     printf("Please input your command\r\n");
-    while(1)
+    scanf("%s", command);
+    printf(">>%s\r\n", command);
+    if(strstr(command, "kp=") != NULL)
     {
-        scanf("%s", command);
-        printf(">>%s\r\n", command);
-        if(strstr(command, "kp=") != NULL)
-        {
-            sscanf(command, "kp=%d,ki=%d,kd=%d", &temp1, &temp2, &temp3);
-            kp = temp1;
-            ki = temp2;
-            kd = temp3;
-            printf("<<kp = %d\r\n", kp);
-            printf("<<ki = %d\r\n", ki);
-            printf("<<kd = %d\r\n", kd);
-        }
+        sscanf(command, "kp=%d,ki=%d,kd=%d", &temp1, &temp2, &temp3);
+        kp = temp1;
+        ki = temp2;
+        kd = temp3;
+        printf("<<kp = %d\r\n", kp);
+        printf("<<ki = %d\r\n", ki);
+        printf("<<kd = %d\r\n", kd);
     }
+
 }
 
 uint16_t ReadValue(uint16_t RegAdd)

@@ -19,6 +19,7 @@
 #include "stdio.h"
 #include "stdint.h"
 #include "string.h"
+#include "key.h"
 
 #define MISO_Pin LL_GPIO_PIN_6
 #define MISO_GPIO_Port GPIOA
@@ -57,6 +58,11 @@
 #define IN4_GPIO_Port GPIOB
 #define NSS_Pin LL_GPIO_PIN_4
 #define NSS_GPIO_Port GPIOA
+#define KEY1_Pin LL_GPIO_PIN_3
+#define KEY1_GPIO_Port GPIOB
+#define KEY2_Pin LL_GPIO_PIN_15
+#define KEY2_GPIO_Port GPIOA
+
 
 #ifndef NVIC_PRIORITYGROUP_0
     #define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,
