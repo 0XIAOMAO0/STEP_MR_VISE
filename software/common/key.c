@@ -79,7 +79,7 @@ int8_t KEY_Process(void)
 	uint16_t key_value = 0;
 	key_value = KEY_Scan(); // 支持连按
 	if (key_value == 0) return -1;
-	
+	// printf("key_value:%d\r\n",key_value);
 	switch (key_value)
 	{
 	case KEY1_PRES:

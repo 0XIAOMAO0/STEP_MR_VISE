@@ -26,26 +26,27 @@ void SysTick_Handler(void)
 {
 }
 
-uint8_t TimerCallBack_CheakDIR(void)
-{
-    return DIRIN == DIR_ACTIVE_LEVEL;
-}
-
-//根据方向控制信号改变计数器的上下计数方向
 void EXTI0_1_IRQHandler(void)
 {
-    if(LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_1) != RESET)
-    {
-        LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_1);
-        if(TimerCallBack_CheakDIR())
-        {
-            LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_UP);
-        }
-        else
-        {
-            LL_TIM_SetCounterMode(TIM1, LL_TIM_COUNTERMODE_DOWN);
-        }
-    }
+    printf("EXTI0_1_IRQHandler\r\n");
+    //step引脚中断
+//   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_0) != RESET)
+//   {
+//     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_0);
+//     if(dir)
+// 	  step_input+=stepangle;
+// 	else  
+// 	  step_input-=stepangle;
+//   }
+//   //DIR引脚中断
+//   if (LL_EXTI_IsActiveFlag_0_31(LL_EXTI_LINE_1) != RESET)
+//   {
+//     LL_EXTI_ClearFlag_0_31(LL_EXTI_LINE_1);
+//     if(DIRIN==1)
+// 	  dir=1;
+// 	else
+// 	  dir=0;
+//   }
 }
 
 uint8_t InputCallBack_CheakENN(void)
@@ -66,6 +67,7 @@ void InputCallBack_ENABLE(void)
     motor_pos_last = motor_pos;
     motor_rev_cnt = 0;
     en_mode = ENABLE;
+    printf("ENIN is active\r\n");
 }
 
 void InputCallBack_DISABLE(void)
@@ -105,14 +107,14 @@ void TimerCallBack_Controler(void)
             encoder_cnt = *(volatile uint16_t *)(ReadAngle() * 2 + FLASH_BASS_ADDRESS); //读出编码器的角度位置值
             // step_input = LL_TIM_GetCounter(TIM1); //读出计数器计数的外部step控制脉冲数
             // step_input = 0;
-            if(step_input - step_input_last < -(STEP_INPUT_COUNTER_RELOAD_VAL / 2))
-            {
-                step_input_sum += stepangle * (STEP_INPUT_COUNTER_RELOAD_VAL + 1);
-            }
-            else if(step_input - step_input_last > (STEP_INPUT_COUNTER_RELOAD_VAL / 2))
-            {
-                step_input_sum -= stepangle * (STEP_INPUT_COUNTER_RELOAD_VAL + 1);
-            }
+            // if(step_input - step_input_last < -(STEP_INPUT_COUNTER_RELOAD_VAL / 2))
+            // {
+            //     step_input_sum += stepangle * (STEP_INPUT_COUNTER_RELOAD_VAL + 1);
+            // }
+            // else if(step_input - step_input_last > (STEP_INPUT_COUNTER_RELOAD_VAL / 2))
+            // {
+            //     step_input_sum -= stepangle * (STEP_INPUT_COUNTER_RELOAD_VAL + 1);
+            // }
             motor_pos_set = step_input_sum + stepangle * step_input; //溢出处理后根据电子齿轮算出指令电机位置
             step_input_last = step_input;
             if(encoder_cnt - encoder_cnt_last > (ENCODER_CNT_PER_REV / 2))
@@ -128,7 +130,7 @@ void TimerCallBack_Controler(void)
             if((motor_pos_err<30 && motor_pos_err>0) ||	(motor_pos_err>-30 && motor_pos_err<0))
             {
             	motor_pos_err = 0;
-						}
+			}
             if(motor_pos_err > (ENCODER_CNT_PER_REV * 0.1))  //误差值大小限制
             {
                 motor_pos_err = (ENCODER_CNT_PER_REV * 0.1);
@@ -153,6 +155,11 @@ void TimerCallBack_Controler(void)
                 pid_iterm = -CLOSED_LOOP_MODE_CURRENT_SUM_MAX;
             }
             pid_dterm = LOWPASS_FILTERING_A * pid_dterm / 128 - LOWPASS_FILTERING_B * kd * (motor_pos - motor_pos_last) / 8; //微分项计算
+            if (motor_pos_err == 0)
+            {
+                pid_iterm = 0;
+            }
+            
             vector_current = (kp * motor_pos_err + pid_iterm + pid_dterm) / 128; //PID三项计算值
             advance = (motor_pos - motor_pos_last) * 3;
             encoder_cnt_last = encoder_cnt;

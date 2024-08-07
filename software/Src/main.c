@@ -303,9 +303,9 @@ void test_4096(void);
 //int16_t ki=10;
 //int16_t kd=100;
 // 已移植
-int16_t kp = 60;
-int16_t ki = 5;
-int16_t kd = 80;
+int16_t kp = 30;
+int16_t ki = 10;
+int16_t kd = 100;
 
 int32_t step_input = 0; //外部控制脉冲输入定时器的值
 int32_t step_input_last = 0;
@@ -332,7 +332,6 @@ uint8_t en_mode = 1; //使能标志位
 
 int main(void)
 {
-//		uint16_t angle;
     LL_Init();
     SystemClock_Config();
     MX_GPIO_Init();
@@ -349,8 +348,6 @@ int main(void)
     {
         // SerialCheck();
         KEY_Process();
-//			angle=ReadAngle();
-//			printf("angle:%d\n",angle);
     }
 }
 
@@ -676,13 +673,17 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull = LL_GPIO_PULL_UP;
 	LL_GPIO_Init(KEY1_GPIO_Port, &GPIO_InitStruct);
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE0);
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE1);
-    LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTB, LL_SYSCFG_EXTI_LINE2);
-    LL_GPIO_SetPinPull(DIRIN_GPIO_Port, DIRIN_Pin, LL_GPIO_PULL_NO);//方向控制信号外部管脚中断
-    LL_GPIO_SetPinPull(ENIN_GPIO_Port, ENIN_Pin, LL_GPIO_PULL_UP);//使能信号外部管脚中断
+    LL_GPIO_SetPinPull(CLKIN_GPIO_Port, CLKIN_Pin, LL_GPIO_PULL_NO);
+    LL_GPIO_SetPinPull(DIRIN_GPIO_Port, DIRIN_Pin, LL_GPIO_PULL_NO);
+    LL_GPIO_SetPinPull(ENIN_GPIO_Port, ENIN_Pin, LL_GPIO_PULL_UP);
+    LL_GPIO_SetPinMode(CLKIN_GPIO_Port, CLKIN_Pin, LL_GPIO_MODE_INPUT);
     LL_GPIO_SetPinMode(DIRIN_GPIO_Port, DIRIN_Pin, LL_GPIO_MODE_INPUT);
     LL_GPIO_SetPinMode(ENIN_GPIO_Port, ENIN_Pin, LL_GPIO_MODE_INPUT);
+    EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_0;
+    EXTI_InitStruct.LineCommand = ENABLE;
+    EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;
+    EXTI_InitStruct.Trigger = LL_EXTI_TRIGGER_FALLING;
+    LL_EXTI_Init(&EXTI_InitStruct);
     EXTI_InitStruct.Line_0_31 = LL_EXTI_LINE_1;
     EXTI_InitStruct.LineCommand = ENABLE;
     EXTI_InitStruct.Mode = LL_EXTI_MODE_IT;

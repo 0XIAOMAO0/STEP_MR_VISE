@@ -138,9 +138,9 @@
 #define CLOSED_LOOP_MODE_CURRENT_MAX        10             // 闭环模式最大电流设置，0.1欧姆采样电阻255对应3.3A电流
 #define OPEN_LOOP_MODE_CURRENT_MAX          160             // 开环模式最大电流设置，0.1欧姆采样电阻255对应3.3A电流
 #define CALIBRATION_MODE_CURRENT            30              // 校准模式电流设置，0.1欧姆采样电阻255对应3.3A电流
-#define CLOSED_LOOP_MODE_CURRENT_SUM_MAX    100           // 闭环模式最大电流x128，用于积分项目饱和限制
-#define LOWPASS_FILTERING_A                 110             // 低通滤波参数变量
-#define LOWPASS_FILTERING_B                 10              // 低通滤波参数变量
+#define CLOSED_LOOP_MODE_CURRENT_SUM_MAX    128           // 闭环模式最大电流x128，用于积分项目饱和限制
+#define LOWPASS_FILTERING_A                 100             // 低通滤波参数变量
+#define LOWPASS_FILTERING_B                 10             // 低通滤波参数变量
 
 #define my_abs(x)  ((x)>0?(x):(-(x)))
 
