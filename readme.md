@@ -18,15 +18,9 @@
 
 
 
-![image](https://github.com/0XIAOMAO0/STEP_MR_VISE/tree/master/software/渲染图.jpg)
+![image](D:\My_project\STEP_MR_VISE\image\readme\渲染图-17230408686775.jpg)
 
-![image](https://github.com/0XIAOMAO0/STEP_MR_VISE/tree/master/software/台钳手动版.JPG)
-
-
-
-
-
-
+![image](D:\My_project\STEP_MR_VISE\image\readme\台钳手动版-17230408803817.JPG)
 
 
 视频演示：[bilibili](https://www.bilibili.com/video/BV1ybicebESk/?share_source=copy_web&vd_source=d128331ee99153cf5294c26aba5f51e4) 
@@ -37,7 +31,7 @@
 
 
 
-## 材料清单 
+## 材料清单
 
 1.电路板所需元器件BOM已给出
 
