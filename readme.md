@@ -18,9 +18,9 @@
 
 
 
-![image](D:\My_project\STEP_MR_VISE\image\readme\渲染图-17230408686775.jpg)
+![image](https://github.com/0XIAOMAO0/STEP_MR_VISE/blob/master/image/%E5%8F%B0%E9%92%B3%E6%89%8B%E5%8A%A8%E7%89%88.JPG)
 
-![image](D:\My_project\STEP_MR_VISE\image\readme\台钳手动版-17230408803817.JPG)
+![image](https://github.com/0XIAOMAO0/STEP_MR_VISE/blob/master/image/%E5%8F%B0%E9%92%B3%E6%89%8B%E5%8A%A8%E7%89%88.JPG)
 
 
 视频演示：[bilibili](https://www.bilibili.com/video/BV1ybicebESk/?share_source=copy_web&vd_source=d128331ee99153cf5294c26aba5f51e4) 
